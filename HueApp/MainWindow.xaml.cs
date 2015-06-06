@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Http;
 
 namespace HueApp
 {
@@ -23,6 +24,22 @@ namespace HueApp
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            HttpClient client= new HttpClient();
+            String requestUri = "http://10.0.0.162/api/NextNature/lights/1/state";
+            HttpContent content = new StringContent("{\"on\":\"true\"}");
+            try
+            {
+                client.PutAsync(requestUri, content);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
         }
     }
 }
