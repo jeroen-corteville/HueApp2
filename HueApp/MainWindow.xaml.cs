@@ -13,6 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.Analytics.v3;
 
 namespace HueApp
 {
@@ -21,6 +26,7 @@ namespace HueApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private X509Certificate2 certi;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +36,7 @@ namespace HueApp
         {
             HttpClient client= new HttpClient();
             String requestUri = "http://10.0.0.162/api/NextNature/lights/1/state";
-            HttpContent content = new StringContent("{\"on\":\"true\"}");
+            HttpContent content = new StringContent("{\"on\":true}");
             try
             {
                 client.PutAsync(requestUri, content);
@@ -39,7 +45,28 @@ namespace HueApp
             {
                 MessageBox.Show(ex.ToString());
             }
-            
+        }
+
+        private void initGoogleConnection()
+        {
+            certi = new X509Certificate2(@"key.p12", "notasecret", X509KeyStorageFlags.Exportable);
+
+            String serviceAccountEmail = "932199827264-3tf7l96rdmgbatjhisr2vb1l26o8gs9h@developer.gserviceaccount.com";
+
+            ServiceAccountCredential credential = new ServiceAccountCredential(
+              new ServiceAccountCredential.Initializer(serviceAccountEmail)
+              {
+              }.FromCertificate(certi));
+
+            var service = new Google.Apis.Analytics.v3.AnalyticsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "Google Analytics Service"
+            });
+
+            Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("", "rt:activeUsers").Execute();
+
+            rtd.Ob
         }
     }
 }
