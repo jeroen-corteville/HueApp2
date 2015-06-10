@@ -69,7 +69,7 @@ namespace HueApp
             });
 
             Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("ga:7375990", "rt:activeUsers").Execute();
-            MessageBox.Show(rtd.Rows[0][0].ToString());
+            MessageBox.Show("Actieve Users op dit moment: "+ rtd.Rows[0][0].ToString());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
