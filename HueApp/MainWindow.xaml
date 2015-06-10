@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Margin="213,234,0,0" VerticalAlignment="Top" Width="75" Click="btnTest_Click_1"/>
-        <Button Content="Hallo!" HorizontalAlignment="Left" Margin="213,35,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Margin="213,234,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Hallo!" HorizontalAlignment="Left" Margin="213,35,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
         <Slider HorizontalAlignment="Left" Margin="150,182,0,0" VerticalAlignment="Top" Width="197"/>
         <ProgressBar HorizontalAlignment="Left" Height="15" Margin="113,108,0,0" VerticalAlignment="Top" Width="277"/>
 

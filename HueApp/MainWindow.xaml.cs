@@ -76,5 +76,10 @@ namespace HueApp
         {
             initGoogleConnection();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            initGoogleConnection();
+        }
     }
 }
