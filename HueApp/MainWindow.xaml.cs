@@ -52,21 +52,29 @@ namespace HueApp
             certi = new X509Certificate2(@"key.p12", "notasecret", X509KeyStorageFlags.Exportable);
 
             String serviceAccountEmail = "932199827264-3tf7l96rdmgbatjhisr2vb1l26o8gs9h@developer.gserviceaccount.com";
+            string[] scopes = new string[] {
+                AnalyticsService.Scope.Analytics
+            };
 
             ServiceAccountCredential credential = new ServiceAccountCredential(
               new ServiceAccountCredential.Initializer(serviceAccountEmail)
               {
+                  Scopes = scopes
               }.FromCertificate(certi));
 
-            var service = new Google.Apis.Analytics.v3.AnalyticsService(new BaseClientService.Initializer()
+            AnalyticsService service = new AnalyticsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = "Google Analytics Service"
             });
 
-            Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("", "rt:activeUsers").Execute();
+            Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("ga:7375990", "rt:activeUsers").Execute();
+            MessageBox.Show(rtd.Rows[0][0].ToString());
+        }
 
-            rtd.Ob
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            initGoogleConnection();
         }
     }
 }
