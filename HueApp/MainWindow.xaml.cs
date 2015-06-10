@@ -46,7 +46,7 @@ namespace HueApp
                 MessageBox.Show(ex.ToString());
             }
         }
-
+            
         private void initGoogleConnection()
         {
             certi = new X509Certificate2(@"key.p12", "notasecret", X509KeyStorageFlags.Exportable);
