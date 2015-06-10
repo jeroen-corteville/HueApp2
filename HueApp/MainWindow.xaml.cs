@@ -29,8 +29,8 @@ namespace HueApp
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
             HttpClient client= new HttpClient();
-            String requestUri = "http://10.0.0.162/api/NextNature/lights/1/state";
-            HttpContent content = new StringContent("{\"on\":\"true\"}");
+            String requestUri = "http://10.0.0.129/api/NextNature/lights/1/state/";
+            HttpContent content = new StringContent("{\"on\":true}");
             try
             {
                 client.PutAsync(requestUri, content);
@@ -40,6 +40,22 @@ namespace HueApp
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void btnTest_Click_1(object sender, RoutedEventArgs e)
+        {
+            HttpClient client = new HttpClient();
+            String requestUri = "http://10.0.0.129/api/NextNature/lights/1/state/";
+            HttpContent content = new StringContent("{\"on\":true}");
+            try
+            {
+                client.PutAsync(requestUri, content);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
         }
     }
 }
