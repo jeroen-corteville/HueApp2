@@ -68,11 +68,77 @@ namespace HueApp
                 ApplicationName = "Google Analytics Service"
             });
 
-            Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("ga:7375990", "rt:activeUsers").Execute();
-            MessageBox.Show("Actieve Users op dit moment: "+ rtd.Rows[0][0].ToString());
+            try
+            {
+                Google.Apis.Analytics.v3.Data.RealtimeData rtd = service.Data.Realtime.Get("ga:7375990", "rt:activeUsers").Execute();
+                int aantalUsers = int.Parse(rtd.Rows[0][0]);
+                lblUsers.Content = "Actieve Users op website: " + rtd.Rows[0][0].ToString();
+                updateLampen(aantalUsers);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            //MessageBox.Show("Actieve Users op dit moment: "+ rtd.Rows[0][0].ToString());
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void updateLampen(int aantalUsers)
+        {
+            HttpClient client = new HttpClient();
+            
+            String lampenParameters = "";
+            String lampNummer = "1";
+
+
+
+            if (aantalUsers < 5)
+            {
+                String onoffstring = "true";
+                String hue = "10000";
+                String brightness = "255";
+                String saturation = "255";
+
+
+                lampenParameters = "{\"on\":" + onoffstring + ", \"hue\":" + hue + ", \"bri\":" + brightness + ", \"sat\":" + saturation + ", \"transitiontime\":5}";
+                lampNummer = "1";
+            } else if(aantalUsers< 11) {
+
+                String onoffstring = "true";
+                String hue = "10000";
+                String brightness = "255";
+                String saturation = "255";
+                lampenParameters = "{\"on\":" + onoffstring + ", \"hue\":" + hue + ", \"bri\":" + brightness + ", \"sat\":" + saturation + ", \"transitiontime\":5}";
+                lampNummer = "2";
+            }
+
+            String requestUri = "http://" + txtIPadres.Text + "/api/NextNature/lights/"+ lampNummer +"/state";
+            HttpContent content = new StringContent(lampenParameters);
+
+            try
+            {
+                client.PutAsync(requestUri, content);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+
+        }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            initGoogleConnection();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 5);
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
         {
             initGoogleConnection();
         }
